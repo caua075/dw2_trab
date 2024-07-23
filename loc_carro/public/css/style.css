@@ -1,0 +1,164 @@
+/* General Layout */
+* {
+    font-family: 'Roboto';
+}
+
+body{
+    color: #FFF;
+    background-image: url('/img/logo_alugacar.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.msg{
+    background-color: #D4EDDA;
+    color: #155724;
+    border: 0.1vw solid #C3E6CB;
+    width: 100%;
+    margin-bottom: 0;
+    text-align: center;
+    padding: 1vh;
+}
+
+h1{
+    text-align: center;
+}
+
+/* Transparent Box */
+.transparent-box {
+    background-color: rgba(53, 51, 51, 0.9); /* Cor branca com 80% de opacidade */
+    padding: 1vh;
+    color: #FFF;
+    margin: 8vh auto;
+    border-radius: 10px;
+    box-shadow: 0 0.1cap 0.2cap rgba(0, 0, 0, 0.2);
+    max-width: 40vw;
+}
+
+/* Navbar */
+#navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #696969;
+}
+
+#logo span{
+    margin-left: 0.2vw;
+    font-family: 'Kanit';
+    text-transform: uppercase;
+    font-size: 1.9cap;
+    font-weight: bold;
+    color: #FF0000;
+    text-decoration: none;
+}
+
+#navbar img {
+    width: 18%;
+}
+
+#navbarNav a {
+    color: #FFF;
+    font-weight: 500;
+    text-decoration: underline;
+    font-size: x-large;
+}
+
+#navbarNav a:hover {
+    color: #8B0000;
+}
+
+#navbarNav a:active {
+    color: #FF0000;
+}
+
+/* Welcome */
+
+#welcome h1 {
+    text-align: center;
+    font-size: 3em;
+    margin-bottom: 0;
+}
+#welcome span{
+    color: #FF0000;
+}
+
+#text-welcome {
+
+    font-size: 1.5em;
+    padding-top: 2cap;
+}
+
+#list-welcome li{
+    padding-left: 4cap;
+}
+
+#btn-welcome{
+    background-color: #8B0000;
+    border-color: #8B0000;
+}
+
+#btn-welcome:hover{
+    background-color: #FF0000;
+    border-color: #FF0000;
+}
+
+#btn-welcome:active {
+    color: #FFF;
+    background-color: #FF0000;
+    border-color: #FF0000;
+}
+/* Form */
+#cars-form input, #cars-form select{
+    background-color: #696969;
+    color: #FFF;
+}
+
+/* Show Cars */
+.img-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.img-fluid {
+    max-height: 100%;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Dashboard */
+#dashboard h1 {
+    text-align: center;
+    font-size: 3em;
+    margin-bottom: 0;
+}
+
+/* Edit Page */
+
+.img-preview {
+    width: 30%;
+    height: auto;
+}
+
+/* Footer */
+footer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: #696969;
+    color: #FFF;
+    padding: 1vh;
+    position: relative;
+    margin-top: auto;
+}
+
+footer p {
+    margin-bottom: 0;
+}

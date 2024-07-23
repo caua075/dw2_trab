@@ -1,0 +1,25 @@
+name: Deploy to AWS
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+                uses: actions/checkout@v2
+
+            - name: Set up AWS credentials
+                uses: aws-actions/configure-aws-credentials@v1
+                with:
+                    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                    aws-region: us-east-1
+
+            - name: Deploy to AWS EC2
+                run: |
+                    ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ec2-user@ec2-54-174-179-163.compute-1.amazonaws.com 'cd /var/www/html/trab_dw2_lar && git pull'
