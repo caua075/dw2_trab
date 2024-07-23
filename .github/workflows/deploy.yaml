@@ -18,7 +18,7 @@ jobs:
       with:
         php-version: '8.2' # Certifique-se de usar a versão do PHP que sua aplicação requer
 
-    - name: Copy files via SCP
+    - name: Copy files via SSH
       env:
         EC2_USER: ubuntu
         EC2_HOST: ec2-54-174-179-163.compute-1.amazonaws.com
