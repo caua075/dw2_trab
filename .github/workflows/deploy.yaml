@@ -1,29 +1,23 @@
-name: Deploy Laravel Application
-
+name: Push-to-EC2
 on:
   push:
     branches:
-      - main # Escolha o branch que você deseja monitorar para deploys
-
+      - main
 jobs:
   deploy:
+    name: Deploy to EC2
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout the files
+        uses: actions/checkout@v3
 
-    - name: Set up PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2' # Certifique-se de usar a versão do PHP que sua aplicação requer
-
-    - name: Copy files via SSH
-      env:
-        EC2_USER: ubuntu
-        EC2_HOST: ec2-54-174-179-163.compute-1.amazonaws.com
-        EC2_KEY: ${{ secrets.EC2_SSH_KEY}}
-        APP_DIR: /var/www/html/ # O diretório no seu servidor onde a aplicação será armazenada
-      run: |
-        sudo apt-get update
-
+      - name: Copy files to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ec2-35-171-153-149.compute-1.amazonaws.com
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "./"
+          target: "/var/www/html/"
+          port: 22
