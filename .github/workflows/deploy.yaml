@@ -29,12 +29,4 @@ jobs:
         sudo apt-get install -y sshpass
         sshpass -p $EC2_KEY rsync -avz --delete --exclude 'node_modules' --exclude '.git' ./ $EC2_USER@$EC2_HOST:$APP_DIR
 
-    - name: Run migrations
-      run: ssh -i ${{ secrets.EC2_SSH_KEY}} ubuntu@ec2-54-174-179-163.compute-1.amazonaws.com "cd /var/www/html/ && php artisan migrate --force"
-
-    - name: Clear caches
-      run: ssh -i ${{ secrets.EC2_SSH_KEY}} ubuntu@ec2-54-174-179-163.compute-1.amazonaws.com "cd /var/www/html/ && php artisan optimize"
-
-    - name: Restart server
-      run: ssh -i ${{ secrets.EC2_SSH_KEY}} ubuntu@ec2-54-174-179-163.compute-1.amazonaws.com "sudo systemctl restart apache2" # Altere conforme necessário (ex: nginx)
 
