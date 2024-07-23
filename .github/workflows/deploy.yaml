@@ -1,25 +1,43 @@
-name: Deploy to AWS
+name: Deploy Laravel Application
 
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches:
+      - main # Escolha o branch que você deseja monitorar para deploys
 
 jobs:
-    deploy:
-        runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout code
-                uses: actions/checkout@v2
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-            - name: Set up AWS credentials
-                uses: aws-actions/configure-aws-credentials@v1
-                with:
-                    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                    aws-region: us-east-1
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2' # Certifique-se de usar a versão do PHP que sua aplicação requer
 
-            - name: Deploy to AWS EC2
-                run: |
-                    ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ec2-user@ec2-54-174-179-163.compute-1.amazonaws.com 'cd /var/www/html/trab_dw2_lar && git pull'
+    - name: Install dependencies
+      run: composer install --no-dev --prefer-dist --optimize-autoloader
+
+    - name: Copy files via SCP
+      env:
+        EC2_USER: ubuntu
+        EC2_HOST: ec2-54-174-179-163.compute-1.amazonaws.com
+        EC2_KEY: ${{ secrets.EC2_SSH_KEY}}
+        APP_DIR: /var/www/html/ # O diretório no seu servidor onde a aplicação será armazenada
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y sshpass
+        sshpass -p $EC2_KEY rsync -avz --delete --exclude 'node_modules' --exclude '.git' ./ $EC2_USER@$EC2_HOST:$APP_DIR
+
+    - name: Run migrations
+      run: ssh -i ${{ secrets.EC2_SSH_KEY}} ubuntu@ec2-54-174-179-163.compute-1.amazonaws.com "cd /var/www/html/ && php artisan migrate --force"
+
+    - name: Clear caches
+      run: ssh -i ${{ secrets.EC2_SSH_KEY}} ubuntu@ec2-54-174-179-163.compute-1.amazonaws.com "cd /var/www/html/ && php artisan optimize"
+
+    - name: Restart server
+      run: ssh -i ${{ secrets.EC2_SSH_KEY}} ubuntu@ec2-54-174-179-163.compute-1.amazonaws.com "sudo systemctl restart apache2" # Altere conforme necessário (ex: nginx)
+
